@@ -1,0 +1,66 @@
+package com.knullci.knull.application.service.impl;
+
+import com.knullci.knull.application.service.BuildExecutor;
+import com.knullci.knull.application.service.JobService;
+import com.knullci.knull.domain.factory.BuildFactory;
+import com.knullci.knull.domain.model.enums.BuildStatus;
+import com.knullci.knull.infrastructure.persistence.entity.Build;
+import com.knullci.knull.infrastructure.persistence.entity.Job;
+import com.knullci.knull.infrastructure.persistence.repository.BuildRepository;
+import com.knullci.necrosword.application.executor.CommandExecutor;
+import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Service
+public class BuildExecutorImpl implements BuildExecutor {
+
+    private final JobService jobService;
+    private final BuildRepository buildRepository;
+    private final CommandExecutor commandExecutor;
+
+    private final Logger logger = LoggerFactory.getLogger(BuildExecutorImpl.class);
+
+    // TODO: get work directory from properties file
+    private final String workspaceDirectory = "/Users/deepakraj/Documents/Deepak/workspace/";
+
+    public BuildExecutorImpl(JobService jobService, BuildRepository buildRepository, CommandExecutor commandExecutor) {
+        this.jobService = jobService;
+        this.buildRepository = buildRepository;
+        this.commandExecutor = commandExecutor;
+    }
+
+    @Override
+    @SneakyThrows
+    @Async
+    public void runBuild(Build _build) {
+
+        Job job = this.jobService.getJobById(_build.getJobId());
+
+        var build = BuildFactory.fromEntity(_build);
+        build.setStatus(BuildStatus.BUILDING);
+        this.buildRepository.save(build.toEntity());
+
+        String repoName = job.getScmUrl().split("/")[4].replace(".git", "");
+
+        if (Files.isDirectory(Paths.get(workspaceDirectory + repoName))) {
+            String gitPullCmd = "git pull";
+
+            commandExecutor.execute(gitPullCmd, new File(workspaceDirectory + repoName));
+        } else {
+            String gitCloneCmd = "git clone " +
+                    job.getScmUrl() + " --branch " +
+                    job.getBranch() + " --single-branch";
+
+            commandExecutor.execute(gitCloneCmd, new File(workspaceDirectory));
+        }
+
+        // TODO: call necrosword for parsing the yaml and execution of commands
+    }
+}
