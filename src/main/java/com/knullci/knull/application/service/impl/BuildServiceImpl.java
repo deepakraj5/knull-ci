@@ -9,6 +9,7 @@ import com.knullci.knull.infrastructure.persistence.repository.BuildRepository;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class BuildServiceImpl implements BuildService {
     private final BuildExecutor buildExecutor;
 
     private final Integer numberOfExecutor = 1;
+    private final static String STATUS_TYPE_ALL = "ALL";
 
     private final Logger logger = LoggerFactory.getLogger(BuildScheduler.class);
 
@@ -47,7 +49,13 @@ public class BuildServiceImpl implements BuildService {
     public List<com.knullci.knull.domain.model.Build> getBuilds(String status) {
 
         logger.info("Fetching builds with status: " + status);
-        var builds = this.buildRepository.findAllByStatus(status);
+
+        List<Build> builds;
+        if (status.equals(STATUS_TYPE_ALL)) {
+            builds = this.buildRepository.findAll(Sort.by("id").descending());
+        } else {
+            builds = this.buildRepository.findAllByStatus(status, Sort.by("id").descending());
+        }
 
         return builds.stream().map(BuildFactory::fromEntity).collect(Collectors.toList());
     }

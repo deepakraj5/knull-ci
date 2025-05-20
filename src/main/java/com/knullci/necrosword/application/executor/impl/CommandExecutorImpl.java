@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +39,20 @@ public class CommandExecutorImpl implements CommandExecutor {
         Process process = builder.start();
 
         List<String> output = new ArrayList<>();
+        FileOutputStream fos = new FileOutputStream(workDirectory + "/log.txt", true);
+        DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(fos));
+
+        outputStream.write(cmd.concat("\r\n").getBytes());
+
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                logger.info(line);
+                outputStream.write(line.concat("\r\n").getBytes());
                 output.add(line);
             }
         }
+
+        outputStream.close();
 
         int exitCode = process.waitFor();
         return new CommandExecutorResult(exitCode, output);

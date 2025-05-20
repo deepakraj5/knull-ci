@@ -10,6 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import Image from 'next/image';
 
 export default function TopBar() {
     return (
@@ -17,15 +18,18 @@ export default function TopBar() {
             position="fixed"
             elevation={2}
             sx={{
-                background: 'linear-gradient(to right, #1976d2, #1565c0)',
+                background: ' #1565c0',
                 zIndex: (theme) => theme.zIndex.drawer + 1,
             }}
         >
             <Toolbar sx={{ justifyContent: 'space-between', px: 3 }}>
                 {/* Left: Title */}
-                <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
-                    Knull - CI
-                </Typography>
+                <Image
+                    src="/images/logo.svg"
+                    width={320}
+                    height={40}
+                    alt="knull-ci"
+                />
 
                 {/* Right: Avatar and Button */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

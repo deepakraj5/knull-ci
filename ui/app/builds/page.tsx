@@ -41,9 +41,8 @@ type Build = {
 const statusColor = (status: string) => {
     switch (status.toUpperCase()) {
         case 'QUEUE':
-        case 'QUEUED':
             return 'warning';
-        case 'RUNNING':
+        case 'BUILDING':
             return 'info';
         case 'SUCCESS':
             return 'success';
@@ -54,9 +53,10 @@ const statusColor = (status: string) => {
     }
 };
 
-const statuses = ['ALL', 'QUEUE', 'RUNNING', 'SUCCESS', 'FAILED'];
+const statuses = ['ALL', 'QUEUE', 'BUILDING', 'SUCCESS', 'FAILED'];
 
 import { styled } from '@mui/material/styles';
+import { useRouter } from 'next/navigation';
 
 const StyledFilterWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -100,6 +100,7 @@ export default function AllBuildsPage() {
     const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
+    const router = useRouter();
 
     const handleStatusChange = (event: any) => {
         setSelectedStatus(event.target.value);
@@ -124,8 +125,7 @@ export default function AllBuildsPage() {
 
     useEffect(() => {
         setLoading(true);
-        const statusParam =
-            selectedStatus !== 'ALL' ? `?status=${selectedStatus}` : '';
+        const statusParam = `?status=${selectedStatus}`;
         fetch(`http://localhost:8080/api/v1/builds${statusParam}`)
             .then((res) => res.json())
             .then((data) => {
@@ -193,7 +193,9 @@ export default function AllBuildsPage() {
                                         '&:hover': {
                                             backgroundColor: '#f0f0f0',
                                         },
+                                        cursor: "pointer"
                                     }}
+                                    onClick={() => router.push("/builds/" + build.id + "/logs")}
                                 >
                                     <TableCell>{build.id}</TableCell>
                                     <TableCell>
