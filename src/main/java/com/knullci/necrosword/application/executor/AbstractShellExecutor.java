@@ -17,9 +17,9 @@ public abstract class AbstractShellExecutor {
     // TODO: update stage and build status accordingly
 
     private final String knullFile;
-    private final String workingDirectory;
-    private final Integer buildId;
-    private List<KnullStage> stages;
+    protected final String workingDirectory;
+    protected final Integer buildId;
+    protected List<KnullStage> stages;
     protected final CommandExecutor commandExecutor;
 
     private final Logger logger = LoggerFactory.getLogger(AbstractShellExecutor.class);
@@ -47,19 +47,6 @@ public abstract class AbstractShellExecutor {
         this.stages = knull.getStages();
     }
 
-    // TODO: move this to concreate class
-    private void executeStages() {
-        for (KnullStage stage : stages) {
-            logger.info("Executing the stage: " + stage.getName());
-
-            CommandExecutorResult result = commandExecutor.execute(stage.getCommand(), new File(workingDirectory), this.buildId);
-
-            if (result.exitCode != 0) {
-                // update the status to failed
-                logger.error("Build failed");
-                break;
-            }
-        }
-    }
+    protected abstract void executeStages();
 
 }
