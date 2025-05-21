@@ -21,7 +21,7 @@ public class BuildServiceImpl implements BuildService {
     private final BuildRepository buildRepository;
     private final BuildExecutor buildExecutor;
 
-    private final Integer numberOfExecutor = 1;
+    private final static Integer numberOfExecutor = 1;
     private final static String STATUS_TYPE_ALL = "ALL";
 
     private final Logger logger = LoggerFactory.getLogger(BuildScheduler.class);

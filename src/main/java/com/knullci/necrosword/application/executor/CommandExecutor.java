@@ -6,4 +6,5 @@ import java.io.File;
 
 public interface CommandExecutor {
     CommandExecutorResult execute(String cmd, File workDirectory);
+    CommandExecutorResult execute(String cmd, File workDirectory, Integer buildId);
 }

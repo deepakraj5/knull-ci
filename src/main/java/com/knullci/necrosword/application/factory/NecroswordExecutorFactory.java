@@ -13,8 +13,8 @@ public class NecroswordExecutorFactory {
         this.commandExecutor = commandExecutor;
     }
 
-    public NecroswordExecutor createExecutor(String knullFile, String workingDirectory) {
-        return new NecroswordExecutor(knullFile, workingDirectory, commandExecutor);
+    public NecroswordExecutor createExecutor(String knullFile, String workingDirectory, Integer buildId) {
+        return new NecroswordExecutor(knullFile, workingDirectory, buildId, commandExecutor);
     }
 
 }

@@ -33,15 +33,6 @@ public class LogServiceImpl implements LogService {
             while ((line = reader.readLine()) != null) {
                 simpMessagingTemplate.convertAndSend(destination, new LogStreamResponse(line));
             }
-
-            while (true) {
-                line = reader.readLine();
-                if (line != null) {
-                    simpMessagingTemplate.convertAndSend(destination, new LogStreamResponse(line));
-                } else {
-                    Thread.sleep(1000);
-                }
-            }
         }
     }
 }

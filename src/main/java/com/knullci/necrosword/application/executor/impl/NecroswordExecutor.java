@@ -5,8 +5,8 @@ import com.knullci.necrosword.application.executor.CommandExecutor;
 
 public class NecroswordExecutor extends AbstractShellExecutor {
 
-    public NecroswordExecutor(String knullFile, String workingDirectory, CommandExecutor commandExecutor) {
-        super(knullFile, workingDirectory, commandExecutor);
+    public NecroswordExecutor(String knullFile, String workingDirectory, Integer buildId, CommandExecutor commandExecutor) {
+        super(knullFile, workingDirectory, buildId, commandExecutor);
     }
 
 }

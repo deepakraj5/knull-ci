@@ -69,7 +69,7 @@ public class BuildExecutorImpl implements BuildExecutor {
         // TODO: call necrosword for parsing the yaml and execution of commands
         String knullFileLocation = workspaceDirectory + repoName + job.getKnullFileLocation();
 
-        NecroswordExecutor executor = necroswordExecutorFactory.createExecutor(knullFileLocation, workspaceDirectory + repoName);
+        NecroswordExecutor executor = necroswordExecutorFactory.createExecutor(knullFileLocation, workspaceDirectory + repoName, build.getId());
         executor.execute();
     }
 }
