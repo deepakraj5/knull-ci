@@ -1,6 +1,5 @@
 package com.knullci.necrosword.application.executor;
 
-import com.knullci.necrosword.application.dto.CommandExecutorResult;
 import com.knullci.necrosword.application.factory.YamlParser;
 import com.knullci.necrosword.application.model.Knull;
 import com.knullci.necrosword.application.model.KnullStage;
@@ -8,7 +7,6 @@ import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.List;
 
 public abstract class AbstractShellExecutor {
@@ -16,24 +14,17 @@ public abstract class AbstractShellExecutor {
     // TODO: parse, save build stages, execute each stage, save and stream logs,
     // TODO: update stage and build status accordingly
 
-    private final String knullFile;
-    protected final String workingDirectory;
-    protected final Integer buildId;
+    private String knullFile;
     protected List<KnullStage> stages;
-    protected final CommandExecutor commandExecutor;
-
     private final Logger logger = LoggerFactory.getLogger(AbstractShellExecutor.class);
 
-    public AbstractShellExecutor(String knullFile, String workingDirectory, Integer buildId, CommandExecutor commandExecutor) {
-        this.knullFile = knullFile;
-        this.workingDirectory = workingDirectory;
-        this.buildId = buildId;
-        this.commandExecutor = commandExecutor;
-    }
 
-    public void execute() {
+    public final void execute(String knullFile, String workDir, Integer buildId) {
+        // TODO: make state less and pass it as params
+        // TODO: create methods for before, after, failure scenario
+        this.knullFile = knullFile;
         this.parseKnullFile();
-        this.executeStages();
+        this.executeStages(workDir, buildId);
     }
 
     @SneakyThrows
@@ -47,6 +38,6 @@ public abstract class AbstractShellExecutor {
         this.stages = knull.getStages();
     }
 
-    protected abstract void executeStages();
+    protected abstract void executeStages(String workDir, Integer buildId);
 
 }

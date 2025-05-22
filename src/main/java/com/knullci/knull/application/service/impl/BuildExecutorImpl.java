@@ -7,10 +7,8 @@ import com.knullci.knull.domain.model.enums.BuildStatus;
 import com.knullci.knull.infrastructure.persistence.entity.Build;
 import com.knullci.knull.infrastructure.persistence.entity.Job;
 import com.knullci.knull.infrastructure.persistence.repository.BuildRepository;
-import com.knullci.necrosword.application.executor.AbstractShellExecutor;
 import com.knullci.necrosword.application.executor.CommandExecutor;
 import com.knullci.necrosword.application.executor.impl.NecroswordExecutor;
-import com.knullci.necrosword.application.factory.NecroswordExecutorFactory;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,18 +25,18 @@ public class BuildExecutorImpl implements BuildExecutor {
     private final JobService jobService;
     private final BuildRepository buildRepository;
     private final CommandExecutor commandExecutor;
-    private final NecroswordExecutorFactory necroswordExecutorFactory;
+    private final NecroswordExecutor necroswordExecutor;
 
     private final Logger logger = LoggerFactory.getLogger(BuildExecutorImpl.class);
 
     // TODO: get work directory from properties file
-    private final String workspaceDirectory = "/Users/deepakraj/Documents/Deepak/workspace/";
+    private static final String workspaceDirectory = "/Users/deepakraj/Documents/Deepak/workspace/";
 
-    public BuildExecutorImpl(JobService jobService, BuildRepository buildRepository, CommandExecutor commandExecutor, NecroswordExecutorFactory necroswordExecutorFactory) {
+    public BuildExecutorImpl(JobService jobService, BuildRepository buildRepository, CommandExecutor commandExecutor, NecroswordExecutor necroswordExecutor) {
         this.jobService = jobService;
         this.buildRepository = buildRepository;
         this.commandExecutor = commandExecutor;
-        this.necroswordExecutorFactory = necroswordExecutorFactory;
+        this.necroswordExecutor = necroswordExecutor;
     }
 
     @Override
@@ -66,10 +64,8 @@ public class BuildExecutorImpl implements BuildExecutor {
             commandExecutor.execute(gitCloneCmd, new File(workspaceDirectory));
         }
 
-        // TODO: call necrosword for parsing the yaml and execution of commands
         String knullFileLocation = workspaceDirectory + repoName + job.getKnullFileLocation();
 
-        NecroswordExecutor executor = necroswordExecutorFactory.createExecutor(knullFileLocation, workspaceDirectory + repoName, build.getId());
-        executor.execute();
+        necroswordExecutor.execute(knullFileLocation, workspaceDirectory + repoName, build.getId());
     }
 }
