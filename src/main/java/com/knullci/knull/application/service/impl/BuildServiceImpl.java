@@ -1,6 +1,5 @@
 package com.knullci.knull.application.service.impl;
 
-import com.knullci.knull.application.scheduler.BuildScheduler;
 import com.knullci.knull.application.service.BuildExecutor;
 import com.knullci.knull.application.service.BuildService;
 import com.knullci.knull.domain.factory.BuildFactory;
@@ -24,7 +23,7 @@ public class BuildServiceImpl implements BuildService {
     private final static Integer numberOfExecutor = 1;
     private final static String STATUS_TYPE_ALL = "ALL";
 
-    private final Logger logger = LoggerFactory.getLogger(BuildScheduler.class);
+    private final Logger logger = LoggerFactory.getLogger(BuildServiceImpl.class);
 
     public BuildServiceImpl(BuildRepository buildRepository, BuildExecutor buildExecutor) {
         this.buildRepository = buildRepository;

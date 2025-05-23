@@ -25,6 +25,9 @@ public class Stage {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "command")
+    private String command;
+
     @Column(name = "status")
     private String status;
 

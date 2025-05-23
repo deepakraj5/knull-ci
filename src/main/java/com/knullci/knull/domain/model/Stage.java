@@ -16,13 +16,15 @@ public class Stage {
     private Integer buildId;
     private String name;
     private StageStatus status;
+    private String command;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Stage(Integer buildId, String name, StageStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Stage(Integer buildId, String name, StageStatus status, String command,LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.buildId = buildId;
         this.name = name;
         this.status = status;
+        this.command = command;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -33,8 +35,13 @@ public class Stage {
                 this.buildId,
                 this.name,
                 this.status.toString(),
+                this.command,
                 this.createdAt,
                 this.updatedAt
         );
+    }
+
+    public void setStatus(StageStatus status) {
+        this.status = status;
     }
 }

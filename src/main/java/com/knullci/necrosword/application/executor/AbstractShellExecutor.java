@@ -1,5 +1,6 @@
 package com.knullci.necrosword.application.executor;
 
+import com.knullci.knull.domain.model.Stage;
 import com.knullci.necrosword.application.factory.YamlParser;
 import com.knullci.necrosword.application.model.Knull;
 import com.knullci.necrosword.application.model.KnullStage;
@@ -23,7 +24,10 @@ public abstract class AbstractShellExecutor {
             this.beforeExecute();
 
             List<KnullStage> stages = this.parseKnullFile(knullFile);
-            this.executeStages(workDir, buildId, stages);
+
+            var stageModels = this.saveStages(stages, buildId);
+
+            this.executeStages(workDir, buildId, stageModels);
 
             this.afterExecute();
         } catch (Exception exception) {
@@ -42,7 +46,9 @@ public abstract class AbstractShellExecutor {
         return knull.getStages();
     }
 
-    protected abstract void executeStages(String workDir, Integer buildId, List<KnullStage> stages);
+    protected abstract List<Stage> saveStages(List<KnullStage> stages, Integer buildId);
+
+    protected abstract void executeStages(String workDir, Integer buildId, List<Stage> stages);
 
     private void beforeExecute() {
 
