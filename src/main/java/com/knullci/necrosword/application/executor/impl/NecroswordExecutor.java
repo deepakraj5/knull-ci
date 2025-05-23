@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 
 @Service
 public class NecroswordExecutor extends AbstractShellExecutor {
@@ -22,8 +23,8 @@ public class NecroswordExecutor extends AbstractShellExecutor {
     }
 
     @Override
-    protected void executeStages(String workDir, Integer buildId) {
-        for (KnullStage stage : this.stages) {
+    protected void executeStages(String workDir, Integer buildId, List<KnullStage> stages) {
+        for (KnullStage stage : stages) {
             logger.info("Executing the stage: " + stage.getName());
 
             CommandExecutorResult result = commandExecutor.execute(stage.getCommand(), new File(workDir), buildId);

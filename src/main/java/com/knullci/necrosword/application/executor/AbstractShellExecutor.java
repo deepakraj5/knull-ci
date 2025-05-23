@@ -14,30 +14,46 @@ public abstract class AbstractShellExecutor {
     // TODO: parse, save build stages, execute each stage, save and stream logs,
     // TODO: update stage and build status accordingly
 
-    private String knullFile;
-    protected List<KnullStage> stages;
     private final Logger logger = LoggerFactory.getLogger(AbstractShellExecutor.class);
 
 
     public final void execute(String knullFile, String workDir, Integer buildId) {
-        // TODO: make state less and pass it as params
-        // TODO: create methods for before, after, failure scenario
-        this.knullFile = knullFile;
-        this.parseKnullFile();
-        this.executeStages(workDir, buildId);
+        try
+        {
+            this.beforeExecute();
+
+            List<KnullStage> stages = this.parseKnullFile(knullFile);
+            this.executeStages(workDir, buildId, stages);
+
+            this.afterExecute();
+        } catch (Exception exception) {
+            this.onFailure();
+        }
     }
 
     @SneakyThrows
-    private void parseKnullFile() {
-        logger.info("Parsing knull file: " + this.knullFile);
+    private List<KnullStage> parseKnullFile(String knullFile) {
+        logger.info("Parsing knull file: " + knullFile);
 
-        Knull knull = YamlParser.parseYaml(this.knullFile);
+        Knull knull = YamlParser.parseYaml(knullFile);
 
-        logger.info("Parsed knull file: " + this.knullFile);
+        logger.info("Parsed knull file: " + knullFile);
 
-        this.stages = knull.getStages();
+        return knull.getStages();
     }
 
-    protected abstract void executeStages(String workDir, Integer buildId);
+    protected abstract void executeStages(String workDir, Integer buildId, List<KnullStage> stages);
+
+    private void beforeExecute() {
+
+    }
+
+    private void afterExecute() {
+
+    }
+
+    private void onFailure() {
+
+    }
 
 }
