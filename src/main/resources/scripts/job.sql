@@ -6,8 +6,8 @@ CREATE TABLE jobs (
     scm_secret_id INTEGER NULL,
     branch VARCHAR(200) NOT NULL,
     knull_file_location VARCHAR NOT NULL,
-    created_at TIME WITH TIME ZONE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     created_by BIGINT NOT NULL,
-    updated_at TIME WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
     updated_by BIGINT NOT NULL
 );

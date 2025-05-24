@@ -34,8 +34,8 @@ public class Stage {
                 this.id,
                 this.buildId,
                 this.name,
-                this.status.toString(),
                 this.command,
+                this.status.toString(),
                 this.createdAt,
                 this.updatedAt
         );
@@ -43,5 +43,6 @@ public class Stage {
 
     public void setStatus(StageStatus status) {
         this.status = status;
+        this.updatedAt = LocalDateTime.now();
     }
 }

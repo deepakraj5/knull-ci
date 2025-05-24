@@ -63,5 +63,6 @@ public class Build {
 
     public void setStatus(BuildStatus buildStatus) {
         this.status = buildStatus;
+        this.updatedAt = LocalDateTime.now();
     }
 }

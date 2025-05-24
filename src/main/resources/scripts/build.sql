@@ -10,6 +10,6 @@ CREATE TABLE builds (
     repository_url VARCHAR(200) NOT NULL,
     repository_clone_crl VARCHAR(200) NOT NULL,
     repository_owner VARCHAR(200) NOT NULL,
-    created_at TIME WITH TIME ZONE NOT NULL,
-    updated_at TIME WITH TIME ZONE NOT NULL
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );

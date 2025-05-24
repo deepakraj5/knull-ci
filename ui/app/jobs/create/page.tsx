@@ -80,11 +80,32 @@ export default function CreateJobPage() {
         setFormData((prev) => ({ ...prev, [name as string]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        router.push('/jobs');
+
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/jobs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Job created:', result);
+
+            // Redirect after successful submission
+            router.push('/jobs');
+        } catch (error) {
+            console.error('Failed to create job:', error);
+        }
     };
+
 
     return (
         <Container sx={{ mt: 1 }}>

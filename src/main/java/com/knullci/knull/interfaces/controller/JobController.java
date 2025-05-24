@@ -5,13 +5,11 @@ import com.knullci.knull.application.dto.CreateJobRequestDto;
 import com.knullci.knull.application.dto.CreateJobResponseDto;
 import com.knullci.knull.application.service.JobService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/jobs")
+@CrossOrigin(origins = "*")
 public class JobController {
 
     private final JobService jobService;
