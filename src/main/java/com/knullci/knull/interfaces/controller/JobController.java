@@ -4,8 +4,13 @@ import com.knullci.knull.application.command.CreateJobCommand;
 import com.knullci.knull.application.dto.CreateJobRequestDto;
 import com.knullci.knull.application.dto.CreateJobResponseDto;
 import com.knullci.knull.application.service.JobService;
+import com.knullci.knull.application.service.StageService;
+import com.knullci.knull.domain.model.Job;
+import com.knullci.knull.domain.model.Stage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/jobs")
@@ -25,6 +30,13 @@ public class JobController {
         );
 
         return ResponseEntity.ok(job);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Job>> getAllJob() {
+        List<Job> jobs = this.jobService.getAllJobs();
+
+        return ResponseEntity.ok(jobs);
     }
 
 }

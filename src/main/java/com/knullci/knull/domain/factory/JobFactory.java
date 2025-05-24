@@ -35,4 +35,20 @@ public class JobFactory {
         );
     }
 
+    public static Job fromEntity(com.knullci.knull.infrastructure.persistence.entity.Job job) {
+        return new Job(
+                job.getId(),
+                job.getName(),
+                job.getDescription(),
+                job.getScmUrl(),
+                job.getScmSecretId(),
+                job.getBranch(),
+                job.getKnullFileLocation(),
+                job.getCreatedAt(),
+                job.getCreatedBy(),
+                job.getUpdatedAt(),
+                job.getUpdatedBy()
+        );
+    }
+
 }

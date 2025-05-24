@@ -195,7 +195,7 @@ export default function AllBuildsPage() {
                                         },
                                         cursor: "pointer"
                                     }}
-                                    onClick={() => router.push("/builds/" + build.id + "/logs")}
+                                    onClick={() => router.push("/builds/" + build.id + "/build")}
                                 >
                                     <TableCell>{build.id}</TableCell>
                                     <TableCell>

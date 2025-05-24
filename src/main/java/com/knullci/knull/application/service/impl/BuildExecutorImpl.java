@@ -75,14 +75,13 @@ public class BuildExecutorImpl implements BuildExecutor {
 
         necroswordExecutor.execute(knullFileLocation, workspaceDirectory + repoName, build.getId());
 
-        // TODO: update the build status based on the stage status
         List<Stage> stages = this.stageRepository.findAllByBuildId(build.getId());
         List<Stage> nonSuccessfulStages = stages
                 .stream()
                 .filter(stage -> !Objects.equals(stage.getStatus(), StageStatus.SUCCESS.toString()))
                 .toList();
 
-        if (!nonSuccessfulStages.isEmpty()) {
+        if (!nonSuccessfulStages.isEmpty() || stages.isEmpty()) {
             build.setStatus(BuildStatus.FAILED);
         } else {
             build.setStatus(BuildStatus.SUCCESS);

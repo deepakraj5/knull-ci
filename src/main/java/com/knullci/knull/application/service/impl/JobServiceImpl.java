@@ -68,6 +68,11 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<Job> getAllJobs() {
-        return null;
+        var jobs = this.jobRepository.findAll();
+
+        return jobs
+                .stream()
+                .map(JobFactory::fromEntity)
+                .toList();
     }
 }
