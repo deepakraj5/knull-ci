@@ -53,7 +53,7 @@ public class NecroswordExecutor extends AbstractShellExecutor {
                 stage.setStatus(StageStatus.BUILDING);
                 this.stageRepository.save(stage.toEntity());
 
-                CommandExecutorResult result = commandExecutor.execute(stage.getCommand(), new File(workDir), buildId);
+                CommandExecutorResult result = commandExecutor.execute(stage.getCommand(), new File(workDir), buildId, false);
 
                 if (result.exitCode != 0) {
                     logger.error("Build failed for stage: {}", stage.getName());

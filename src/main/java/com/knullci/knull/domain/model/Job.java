@@ -15,6 +15,7 @@ public class Job {
     private String name;
     private String description;
     private String scmUrl;
+    private boolean isPrivateRepo;
     private Integer scmSecretId;
     private String branch;
     private String knullFileLocation;
@@ -23,10 +24,11 @@ public class Job {
     private LocalDateTime updatedAt;
     private Integer updatedBy;
 
-    public Job(String name, String description, String scmUrl, Integer scmSecretId, String branch, String knullFileLocation, LocalDateTime createdAt, Integer createdBy, LocalDateTime updatedAt, Integer updatedBy) {
+    public Job(String name, String description, String scmUrl, boolean isPrivateRepo, Integer scmSecretId, String branch, String knullFileLocation, LocalDateTime createdAt, Integer createdBy, LocalDateTime updatedAt, Integer updatedBy) {
         this.name = name;
         this.description = description;
         this.scmUrl = scmUrl;
+        this.isPrivateRepo = isPrivateRepo;
         this.scmSecretId = scmSecretId;
         this.branch = branch;
         this.knullFileLocation = knullFileLocation;
@@ -42,6 +44,7 @@ public class Job {
                 this.name,
                 this.description,
                 this.scmUrl,
+                this.isPrivateRepo,
                 this.scmSecretId,
                 this.branch,
                 this.knullFileLocation,

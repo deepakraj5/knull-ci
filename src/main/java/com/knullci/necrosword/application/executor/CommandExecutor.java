@@ -5,6 +5,6 @@ import com.knullci.necrosword.application.dto.CommandExecutorResult;
 import java.io.File;
 
 public interface CommandExecutor {
-    CommandExecutorResult execute(String cmd, File workDirectory);
-    CommandExecutorResult execute(String cmd, File workDirectory, Integer buildId);
+    CommandExecutorResult execute(String cmd, File workDirectory, boolean isSecretCmd);
+    CommandExecutorResult execute(String cmd, File workDirectory, Integer buildId, boolean isSecretCmd);
 }

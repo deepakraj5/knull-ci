@@ -12,6 +12,7 @@ public class CreateJobResponseDto {
     private String name;
     private String description;
     private String scmUrl;
+    private boolean isPrivateRepo;
     private Integer scmSecretId;
     private String branch;
     private String knullFileLocation;

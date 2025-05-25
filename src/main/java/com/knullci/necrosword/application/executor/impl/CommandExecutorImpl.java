@@ -26,18 +26,18 @@ public class CommandExecutorImpl implements CommandExecutor {
 
     @Override
     @SneakyThrows
-    public CommandExecutorResult execute(String cmd, File workDirectory) {
-        return this.executeCmd(cmd, workDirectory, null);
+    public CommandExecutorResult execute(String cmd, File workDirectory, boolean isSecretCmd) {
+        return this.executeCmd(cmd, workDirectory, null, isSecretCmd);
     }
 
     @Override
     @SneakyThrows
-    public CommandExecutorResult execute(String cmd, File workDirectory, Integer buildId) {
-        return this.executeCmd(cmd, workDirectory, buildId);
+    public CommandExecutorResult execute(String cmd, File workDirectory, Integer buildId, boolean isSecretCmd) {
+        return this.executeCmd(cmd, workDirectory, buildId, isSecretCmd);
     }
 
     @SneakyThrows
-    private CommandExecutorResult executeCmd(String cmd, File workDirectory, Integer buildId) {
+    private CommandExecutorResult executeCmd(String cmd, File workDirectory, Integer buildId, boolean isSecretCmd) {
         List<String> commands = new ArrayList<>();
 
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
@@ -63,7 +63,11 @@ public class CommandExecutorImpl implements CommandExecutor {
                 FileOutputStream fos = new FileOutputStream(workDirectory + "/log.txt", true);
                 DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(fos));
         ) {
-            outputStream.writeBytes(cmd + System.lineSeparator());
+            if (isSecretCmd) {
+                outputStream.writeBytes("*****" + System.lineSeparator());
+            } else {
+                outputStream.writeBytes(cmd + System.lineSeparator());
+            }
 
             String line;
             while ((line = reader.readLine()) != null) {

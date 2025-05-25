@@ -28,6 +28,9 @@ public class Job {
     @Column(name = "scm_url")
     private String scmUrl;
 
+    @Column(name = "is_private_repo")
+    private boolean isPrivateRepo;
+
     @Column(name = "scm_secret_id")
     private Integer scmSecretId;
 

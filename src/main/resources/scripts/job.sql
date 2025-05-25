@@ -3,6 +3,7 @@ CREATE TABLE jobs (
     name VARCHAR(30) NOT NULL,
     description VARCHAR(200) NULL,
     scm_url VARCHAR(200) NOT NULL,
+    is_private_repo BOOLEAN NOT NULL,
     scm_secret_id INTEGER NULL,
     branch VARCHAR(200) NOT NULL,
     knull_file_location VARCHAR NOT NULL,

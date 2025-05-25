@@ -13,6 +13,7 @@ public class JobFactory {
                 command.getName(),
                 command.getDescription(),
                 command.getScmUrl(),
+                command.isPrivateRepo(),
                 command.getScmSecretId(),
                 command.getBranch(),
                 command.getKnullFileLocation(),
@@ -29,6 +30,7 @@ public class JobFactory {
                 job.getName(),
                 job.getDescription(),
                 job.getScmUrl(),
+                job.isPrivateRepo(),
                 job.getScmSecretId(),
                 job.getBranch(),
                 job.getKnullFileLocation()
@@ -41,6 +43,7 @@ public class JobFactory {
                 job.getName(),
                 job.getDescription(),
                 job.getScmUrl(),
+                job.isPrivateRepo(),
                 job.getScmSecretId(),
                 job.getBranch(),
                 job.getKnullFileLocation(),
