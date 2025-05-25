@@ -1,4 +1,4 @@
-CREATE TABLE secrets (
+CREATE TABLE IF NOT EXISTS secrets (
     id BIGINT auto_increment PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
     secret_value VARCHAR NOT NULL,

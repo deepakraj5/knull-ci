@@ -1,4 +1,4 @@
-CREATE TABLE stages (
+CREATE TABLE IF NOT EXISTS stages (
     id BIGINT auto_increment PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     build_id BIGINT NOT NULL,

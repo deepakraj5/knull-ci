@@ -17,11 +17,13 @@ import com.knullci.necrosword.application.executor.impl.NecroswordExecutor;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +42,8 @@ public class BuildExecutorImpl implements BuildExecutor {
     private final Logger logger = LoggerFactory.getLogger(BuildExecutorImpl.class);
 
     // TODO: get work directory from properties file
-    private static final String workspaceDirectory = "/Users/deepakraj/Documents/Deepak/workspace/";
+    @Value("${knull.workspace.directory}")
+    private String workspaceDirectory;
 
     public BuildExecutorImpl(JobService jobService, BuildRepository buildRepository, CommandExecutor commandExecutor, NecroswordExecutor necroswordExecutor, StageRepository stageRepository, SecretRepository secretRepository) {
         this.jobService = jobService;
@@ -63,6 +66,13 @@ public class BuildExecutorImpl implements BuildExecutor {
         this.buildRepository.save(build.toEntity());
 
         String repoName = job.getScmUrl().split("/")[4].replace(".git", "");
+
+        Path path = Paths.get(workspaceDirectory);
+        logger.info("t" + Files.exists(path));
+        if (!Files.exists(path)) {
+            boolean t = new File(workspaceDirectory).mkdirs();
+            logger.info("Is: " + t);
+        }
 
         if (Files.isDirectory(Paths.get(workspaceDirectory + repoName))) {
             String gitPullCmd = "git pull";

@@ -1,4 +1,4 @@
-CREATE TABLE builds (
+CREATE TABLE IF NOT EXISTS builds (
     id BIGINT auto_increment PRIMARY KEY,
     job_id BIGINT NOT NULL,
     status VARCHAR(20) NOT NULL,

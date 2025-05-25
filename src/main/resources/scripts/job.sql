@@ -1,4 +1,4 @@
-CREATE TABLE jobs (
+CREATE TABLE IF NOT EXISTS jobs (
     id BIGINT auto_increment PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(200) NULL,
