@@ -17,6 +17,7 @@ public class JobFactory {
                 command.getScmSecretId(),
                 command.getBranch(),
                 command.getKnullFileLocation(),
+                command.isActive(),
                 LocalDateTime.now(),
                 1,
                 LocalDateTime.now(),
@@ -33,7 +34,8 @@ public class JobFactory {
                 job.isPrivateRepo(),
                 job.getScmSecretId(),
                 job.getBranch(),
-                job.getKnullFileLocation()
+                job.getKnullFileLocation(),
+                job.isActive()
         );
     }
 
@@ -47,6 +49,7 @@ public class JobFactory {
                 job.getScmSecretId(),
                 job.getBranch(),
                 job.getKnullFileLocation(),
+                job.isActive(),
                 job.getCreatedAt(),
                 job.getCreatedBy(),
                 job.getUpdatedAt(),

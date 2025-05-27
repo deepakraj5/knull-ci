@@ -5,5 +5,5 @@ import com.knullci.knull.application.dto.LogMessage;
 import java.util.List;
 
 public interface LogService {
-    void streamLogsByBuildId(Integer buildId);
+    List<LogMessage> getLogsByBuildId(Integer buildId);
 }

@@ -63,21 +63,20 @@ public class BuildExecutorImpl implements BuildExecutor {
 
         var build = BuildFactory.fromEntity(_build);
         build.setStatus(BuildStatus.BUILDING);
-        this.buildRepository.save(build.toEntity());
+        var buildEntity = this.buildRepository.save(build.toEntity());
+        build.setId(buildEntity.getId());
 
         String repoName = job.getScmUrl().split("/")[4].replace(".git", "");
 
         Path path = Paths.get(workspaceDirectory);
-        logger.info("t" + Files.exists(path));
         if (!Files.exists(path)) {
-            boolean t = new File(workspaceDirectory).mkdirs();
-            logger.info("Is: " + t);
+            new File(workspaceDirectory).mkdirs();
         }
 
         if (Files.isDirectory(Paths.get(workspaceDirectory + repoName))) {
             String gitPullCmd = "git pull";
 
-            commandExecutor.execute(gitPullCmd, new File(workspaceDirectory + repoName), false);
+            commandExecutor.execute(gitPullCmd, new File(workspaceDirectory + repoName), build.getId(), false);
         } else {
             String gitCloneCmd;
 
@@ -99,7 +98,7 @@ public class BuildExecutorImpl implements BuildExecutor {
                         + " --single-branch";
             }
 
-            commandExecutor.execute(gitCloneCmd, new File(workspaceDirectory), true);
+            commandExecutor.execute(gitCloneCmd, new File(workspaceDirectory), build.getId(), true);
         }
 
         String knullFileLocation = workspaceDirectory + repoName + job.getKnullFileLocation();

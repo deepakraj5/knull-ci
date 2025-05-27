@@ -118,7 +118,7 @@ export default function AllBuildsPage() {
     const handleGoToJob = () => {
         if (selectedJobId) {
             // Redirect to the related job (replace this URL with your actual job URL)
-            window.open(`http://localhost:8080/jobs/${selectedJobId}`, '_blank');
+            window.open(`/jobs/${selectedJobId}`, '_blank');
         }
         handleClose();
     };
@@ -126,7 +126,7 @@ export default function AllBuildsPage() {
     useEffect(() => {
         setLoading(true);
         const statusParam = `?status=${selectedStatus}`;
-        fetch(`http://localhost:8080/api/v1/builds${statusParam}`)
+        fetch(`/api/v1/builds${statusParam}`)
             .then((res) => res.json())
             .then((data) => {
                 setBuilds(data);
@@ -219,7 +219,7 @@ export default function AllBuildsPage() {
                                     <TableCell>{build.ref.split("/")[2]}</TableCell>
                                     <TableCell>
                                         <code style={{ fontFamily: 'monospace' }}>
-                                            {build.headCommit.slice(0, 7)}
+                                            {build.headCommit?.slice(0, 7)}
                                         </code>
                                     </TableCell>
                                     <TableCell>

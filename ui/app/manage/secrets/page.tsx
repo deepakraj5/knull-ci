@@ -27,7 +27,7 @@ export default function SecretListPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/v1/secrets')
+    fetch('/api/v1/secrets')
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch secrets');
         return res.json();

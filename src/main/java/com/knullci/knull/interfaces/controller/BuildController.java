@@ -1,5 +1,6 @@
 package com.knullci.knull.interfaces.controller;
 
+import com.knullci.knull.application.command.CreateBuildCommand;
 import com.knullci.knull.application.service.BuildService;
 import com.knullci.knull.application.service.StageService;
 import com.knullci.knull.domain.model.Build;
@@ -23,7 +24,7 @@ public class BuildController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Build>> getBuildByStatus(@RequestParam(defaultValue = "QUEUE") String status) {
+    public ResponseEntity<List<Build>> getBuildByStatus(@RequestParam(defaultValue = "ALL") String status) {
         List<Build> builds = this.buildService.getBuilds(status);
 
         return ResponseEntity.ok(builds);
@@ -34,6 +35,15 @@ public class BuildController {
         List<Stage> stages = this.stageService.getAllStageByBuildId(id);
 
         return ResponseEntity.ok(stages);
+    }
+
+    @PostMapping("/{buildId}")
+    public ResponseEntity<String> createNewBuild(@PathVariable Integer buildId) {
+        this.buildService.createNewBuild(
+                new CreateBuildCommand(buildId)
+        );
+
+        return ResponseEntity.ok("Created new build");
     }
 
 }

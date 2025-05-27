@@ -1,38 +1,47 @@
 package com.knullci.knull.application.service.impl;
 
-import com.knullci.knull.application.dto.LogStreamResponse;
+import com.knullci.knull.application.dto.LogMessage;
 import com.knullci.knull.application.service.LogService;
 import lombok.SneakyThrows;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
-import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class LogServiceImpl implements LogService {
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
-
-    public LogServiceImpl(SimpMessagingTemplate simpMessagingTemplate) {
-        this.simpMessagingTemplate = simpMessagingTemplate;
-    }
+    @Value("${knull.workspace.directory}")
+    private String workspaceDirectory;
 
     @Override
     @SneakyThrows
-    public void streamLogsByBuildId(Integer buildId) {
-        String destination = "/topic/logs." + buildId;
+    public List<LogMessage> getLogsByBuildId(Integer buildId) {
 
-        File logFile = new File("/Users/deepakraj/Documents/Deepak/workspace/test-next-ssr/log.txt");
+        String logFileLocation =  workspaceDirectory + "/logs/" + buildId + "/logs.txt";
+        List<LogMessage> logs = new ArrayList<>();
 
-        try (RandomAccessFile reader = new RandomAccessFile(logFile, "r")) {
-            String line;
+        Path path = Paths.get(logFileLocation);
+        if (!Files.exists(path)) {
+            return new ArrayList<>();
+        }
 
-            while ((line = reader.readLine()) != null) {
-                simpMessagingTemplate.convertAndSend(destination, new LogStreamResponse(line));
+        try (BufferedReader reader = new BufferedReader(new FileReader(logFileLocation)))
+        {
+            String line = reader.readLine();
+            while (line != null) {
+                logs.add(new LogMessage(line));
+                line = reader.readLine();
             }
         }
+
+        return logs;
     }
 }

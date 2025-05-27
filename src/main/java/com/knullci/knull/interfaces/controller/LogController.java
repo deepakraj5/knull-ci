@@ -1,12 +1,15 @@
 package com.knullci.knull.interfaces.controller;
 
-import com.knullci.knull.application.dto.LogStreamRequest;
+import com.knullci.knull.application.dto.LogMessage;
 import com.knullci.knull.application.service.LogService;
-import lombok.SneakyThrows;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/logs")
+@CrossOrigin(origins = "*")
 public class LogController {
 
     private final LogService logService;
@@ -15,10 +18,10 @@ public class LogController {
         this.logService = logService;
     }
 
-    @MessageMapping("/logs")
-    @SneakyThrows
-    public void streamLogs(LogStreamRequest request) {
-        this.logService.streamLogsByBuildId(request.getBuildId());
-    }
+    @GetMapping("/{buildId}")
+    public ResponseEntity<List<LogMessage>> getLogsByBuildId(@PathVariable Integer buildId) {
+        List<LogMessage> logs = this.logService.getLogsByBuildId(buildId);
 
+        return ResponseEntity.ok(logs);
+    }
 }

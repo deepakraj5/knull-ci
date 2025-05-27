@@ -24,7 +24,7 @@ export default function CreateSecretPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/secrets', {
+      const response = await fetch('/api/v1/secrets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

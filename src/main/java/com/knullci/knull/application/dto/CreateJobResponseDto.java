@@ -16,4 +16,5 @@ public class CreateJobResponseDto {
     private Integer scmSecretId;
     private String branch;
     private String knullFileLocation;
+    private boolean isActive;
 }

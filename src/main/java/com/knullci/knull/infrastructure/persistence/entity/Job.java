@@ -40,6 +40,9 @@ public class Job {
     @Column(name = "knull_file_location")
     private String knullFileLocation;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

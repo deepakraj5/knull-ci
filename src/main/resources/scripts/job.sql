@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     scm_secret_id INTEGER NULL,
     branch VARCHAR(200) NOT NULL,
     knull_file_location VARCHAR NOT NULL,
+    is_active BOOLEAN NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     created_by BIGINT NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL,

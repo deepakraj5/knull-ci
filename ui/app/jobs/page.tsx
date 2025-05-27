@@ -19,6 +19,7 @@ import {
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
+import { useRouter } from 'next/navigation';
 
 type Job = {
     id: number;
@@ -40,9 +41,11 @@ export default function JobsPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const router = useRouter();
+
     useEffect(() => {
         setLoading(true);
-        fetch('http://localhost:8080/api/v1/jobs')
+        fetch('/api/v1/jobs')
             .then(res => {
                 if (!res.ok) throw new Error('Failed to fetch jobs');
                 return res.json();
@@ -94,10 +97,28 @@ export default function JobsPage() {
                                     <TableCell align="center">
                                         <IconButton
                                             color="primary"
-                                            onClick={() => console.log(`Run job ${job.id}`)}
+                                            onClick={async () => {
+                                                try {
+                                                    const res = await fetch(`/api/v1/builds/${job.id}`, {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                        },
+                                                    });
+                                                    if (!res.ok) {
+                                                        throw new Error('Failed to start job');
+                                                    }
+                                                    
+                                                    router.push("/builds");
+                                                } catch (err) {
+                                                    console.error(err);
+                                                    alert(`Failed to start job ${job.name}`);
+                                                }
+                                            }}
                                         >
                                             <PlayArrowIcon />
                                         </IconButton>
+
                                     </TableCell>
                                 </TableRow>
                             ))}

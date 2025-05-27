@@ -13,6 +13,7 @@ public class CreateJobCommand {
     private final Integer scmSecretId;
     private final String branch;
     private final String knullFileLocation;
+    private final boolean isActive;
 
     public CreateJobCommand(CreateJobRequestDto request) {
         this.name = request.getName();
@@ -22,6 +23,7 @@ public class CreateJobCommand {
         this.scmSecretId = request.getScmSecretId();
         this.branch = request.getBranch();
         this.knullFileLocation = request.getKnullFileLocation();
+        this.isActive = request.isActive();
     }
 
 }

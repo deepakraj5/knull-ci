@@ -47,6 +47,11 @@ public class GithubWebhookServiceImpl implements GithubWebhookService {
             return;
         }
 
+        if (!job.get().isActive()) {
+            logger.warn("Job is not active, skipping the request");
+            return;
+        }
+
         var build = GitHubWebhookFactory.createFromCommand(command);
         build.setJobId(job.get().getId());
 

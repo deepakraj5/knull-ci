@@ -65,4 +65,8 @@ public class Build {
         this.status = buildStatus;
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void setId(Integer buildId) {
+        this.id = buildId;
+    }
 }
