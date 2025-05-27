@@ -50,17 +50,20 @@ public class CommandExecutorImpl implements CommandExecutor {
 
         commands.add(cmd);
 
-        ProcessBuilder builder = new ProcessBuilder(commands);
-        builder.redirectErrorStream(true);
-        builder.directory(workDirectory);
-
-        Process process = builder.start();
         String logFileLocation = workspaceDirectory + "/logs/" + buildId;
 
         Path path = Paths.get(logFileLocation);
         if (!Files.exists(path)) {
             new File(logFileLocation).mkdirs();
         }
+
+        ProcessBuilder builder = new ProcessBuilder(commands);
+        builder.redirectErrorStream(true);
+        builder.directory(workDirectory);
+//        builder.redirectOutput(new File(logFileLocation + "/logs.txt")); // directly write logs to the file, but not appending (need to check)
+
+        Process process = builder.start();
+
 
         try (
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -73,9 +76,12 @@ public class CommandExecutorImpl implements CommandExecutor {
                 outputStream.writeBytes(cmd + System.lineSeparator());
             }
 
+            outputStream.flush();
+
             String line;
             while ((line = reader.readLine()) != null) {
                 outputStream.writeBytes(line + System.lineSeparator());
+                outputStream.flush();
             }
         }
 
